@@ -15,6 +15,22 @@ const NewsContainer = styled.main`
 `;
 
 export default class News extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counters: JSON.parse(localStorage.getItem("counters") || "{}")
+    };
+  }
+
+  updateCounter(number, id) {
+    // Use Number() function to prevent string concatenation
+    // "|| 0" if value is "undefined" will set to "0"
+    let counters = this.state.counters;
+    let counter = Number(counters[id] || 0) + number;
+    counters[id] = counter;
+    this.setState({ counters });
+    localStorage.setItem("counters", JSON.stringify(counters));
+  }
   render() {
     return (
       <NewsContainer>
@@ -28,7 +44,12 @@ export default class News extends Component {
                 <p>{item.description}</p>
                 <DateTime>{item.publishedAt}</DateTime>
               </NewsText>
-              <Vote/>
+              {/* Used url as id because it is unique */}
+              <Vote
+                id={item.url}
+                counter={this.state.counters[item.url]}
+                updateCounter={this.updateCounter.bind(this)}
+              />
             </NewsItem>
           );
         })}

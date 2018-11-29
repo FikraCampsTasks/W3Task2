@@ -9,28 +9,16 @@ const VoteContainer = styled.div`
 `;
 
 export default class Vote extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      counter: props.counter || 0
-    };
-  }
-
   upVote() {
-    this.updateCounter(+1);
+    this.props.updateCounter(+1, this.props.id);
   }
 
   downVote() {
-    this.updateCounter(-1);
+    this.props.updateCounter(-1, this.props.id);
   }
-
-  updateCounter(number) {
-    let counter = this.state.counter + number;
-    this.setState({ counter });
-  }
-
+  
   render() {
-    const { counter } = this.state;
+    const { counter } = this.props;
     return (
       <VoteContainer>
         <img
@@ -39,7 +27,7 @@ export default class Vote extends Component {
           src={require("../assets/upvote.svg")}
           alt=""
         />
-        <div>{counter}</div>
+        <div>{counter || 0}</div>
         <img
           height="13px"
           onClick={this.downVote.bind(this)}
