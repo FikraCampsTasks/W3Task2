@@ -32,10 +32,26 @@ export default class News extends Component {
     localStorage.setItem("counters", JSON.stringify(counters));
   }
   render() {
+    const { news, sortBy } = this.props;
+    const { counters } = this.state;
+    let sortedNews = news.sort((a, b) => {
+      switch (sortBy) {
+        case "vote":
+          return Number(counters[b.url] || 0) - Number(counters[a.url] || 0);
+        case "date":
+          return new Date(b.publishedAt) - new Date(a.publishedAt);
+        case "title":
+          const titleA = a.title.toUpperCase(); // ignore upper and lowercase
+          const titleB = b.title.toUpperCase(); // ignore upper and lowercase
+          return titleA > titleB ? 1 : titleA < titleB ? -1 : 0;
+        default:
+          return 0;
+      }
+    });
     return (
       <NewsContainer>
         {/* news data get from news in props which passed from parent */}
-        {this.props.news.map((item, i) => {
+        {sortedNews.map((item, i) => {
           return (
             <NewsItem key={i}>
               <img width="124px;" height="124px" src={item.urlToImage} />
@@ -47,7 +63,7 @@ export default class News extends Component {
               {/* Used url as id because it is unique */}
               <Vote
                 id={item.url}
-                counter={this.state.counters[item.url]}
+                counter={counters[item.url]}
                 updateCounter={this.updateCounter.bind(this)}
               />
             </NewsItem>

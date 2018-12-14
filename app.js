@@ -9,6 +9,7 @@ class App extends Component {
     super();
     this.state = {
       news: [],
+      sortBy: "default",
       searchValue: ""
     };
     // Call for first create of App
@@ -54,15 +55,25 @@ class App extends Component {
     }
   }
 
+  sortBy(sortType) {
+    this.setState({ sortBy: sortType });
+  }
+
   render() {
+    const { news, sortBy } = this.state;
+
     return (
       <React.Fragment>
         <Navigation
           onChange={this.onInputChange.bind(this)}
           onKeyUp={this.onKeyUp.bind(this)}
           value={this.state.searchValue}
+          sortBy={this.sortBy.bind(this)}
         />
-        <News news={this.state.news} />
+        <News news={news} sortBy={sortBy} />
+        {/* Or you can write as
+         <News {...this.state} /> 
+         */}
       </React.Fragment>
     );
   }

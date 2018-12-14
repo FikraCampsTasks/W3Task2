@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import SearchBox from "./searchBox";
+import SortList from "./sortList";
 
 const NavigationContainer = styled.header`
   display: flex;
@@ -16,8 +17,9 @@ export default class Navigation extends Component {
     return (
       <NavigationContainer>
         <img width="150px;" src={require("../assets/logo.png")} />
+        <SortList sortBy={this.props.sortBy} />
         <SearchBox
-        // onChange and onKeyUp implemented in App class 
+          // onChange and onKeyUp implemented in App class
           onChange={this.props.onChange}
           onKeyUp={this.props.onKeyUp}
           value={this.props.value}
