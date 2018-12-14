@@ -32,7 +32,7 @@ export default class News extends Component {
     localStorage.setItem("counters", JSON.stringify(counters));
   }
   render() {
-    const { news, sortBy } = this.props;
+    const { news, sortBy, articlePerPage } = this.props;
     const { counters } = this.state;
     let sortedNews = news.sort((a, b) => {
       switch (sortBy) {
@@ -48,10 +48,11 @@ export default class News extends Component {
           return 0;
       }
     });
+    let limitedPerPage = sortedNews.slice(0, articlePerPage);
     return (
       <NewsContainer>
         {/* news data get from news in props which passed from parent */}
-        {sortedNews.map((item, i) => {
+        {limitedPerPage.map((item, i) => {
           return (
             <NewsItem key={i}>
               <img width="124px;" height="124px" src={item.urlToImage} />

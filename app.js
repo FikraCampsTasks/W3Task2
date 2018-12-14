@@ -9,6 +9,7 @@ class App extends Component {
     super();
     this.state = {
       news: [],
+      articlePerPage: 15,
       sortBy: "default",
       searchValue: ""
     };
@@ -59,8 +60,13 @@ class App extends Component {
     this.setState({ sortBy: sortType });
   }
 
+  showOnly(articlePerPage) {
+    articlePerPage = Number(articlePerPage);
+    this.setState({ articlePerPage });
+  }
+
   render() {
-    const { news, sortBy } = this.state;
+    const { news, sortBy, articlePerPage } = this.state;
 
     return (
       <React.Fragment>
@@ -69,8 +75,9 @@ class App extends Component {
           onKeyUp={this.onKeyUp.bind(this)}
           value={this.state.searchValue}
           sortBy={this.sortBy.bind(this)}
+          showOnly={this.showOnly.bind(this)}
         />
-        <News news={news} sortBy={sortBy} />
+        <News news={news} sortBy={sortBy} articlePerPage={articlePerPage} />
         {/* Or you can write as
          <News {...this.state} /> 
          */}
